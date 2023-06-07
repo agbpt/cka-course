@@ -1,0 +1,52 @@
+apiversion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+spec:
+   containers:
+   - name: data-processor
+     image: data-processor
+   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: 
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: In
+            values:
+            - Large
+            
+apiversion: v1
+kind: Pod
+metadata:
+  name: myapp-pod2
+spec:
+   containers:
+   - name: data-processor2
+     image: data-processor2
+   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: 
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: NotIn
+            values:
+            - Small
+            
+
+apiversion: v1
+kind: Pod
+metadata:
+  name: myapp-pod3
+spec:
+   containers:
+   - name: data-processor3
+     image: data-processor3
+   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution: 
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: size
+            operator: Exists                

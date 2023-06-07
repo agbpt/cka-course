@@ -1,0 +1,16 @@
+apiversion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+spec:
+   containers:
+   - name: nginx-container
+     image: nginx
+   tolarations:
+   - key: "app"
+     operator: "equal"
+     value: "blue"
+     effect: "noSchedule"  
+
+
+   
