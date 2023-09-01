@@ -20,3 +20,41 @@ spec:
       path: /var/log/webapp
       # this field is optional
       type: Directory
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: multi-container-playground
+  name: multi-container-playground
+  namespace: default
+spec:
+  containers:
+  - image: nginx:1.17.6-alpine
+    name: c1
+    env:
+    - name: MY_NODE_NAME
+      valueFrom:                                                                  # add
+        fieldRef:                                                                 # add
+          fieldPath: spec.nodeName
+  - image: busybox:1.31.1
+    name: c2
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+    command:
+    - "sh"
+    - "-c"
+    - "while true; do date >> /vol/date.log; sleep 1; done"
+  - image: busybox:1.31.1
+    name: c3
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+    command:
+    - "sh"
+    - "-c"
+    - "tail -f /vol/date.log"
+  volumes:
+    - name: vol
